@@ -231,7 +231,9 @@ function App() {
         <Routes>
           <Route path='/' element = {
             <div className="App">
-              <FoodForm generateLetter = { generateRandomLetter} addUserInput={addUserInput}> </FoodForm>
+              <div className="TextBox">
+                <FoodForm generateLetter = { generateRandomLetter} addUserInput={addUserInput}> </FoodForm>
+              </div>
               <Filterbar 
               calories = {calories} caloriesChanged = {handleCaloriesInput} 
               allergies = {allergies} allergiesChanged = {handleAllergiesInput}
