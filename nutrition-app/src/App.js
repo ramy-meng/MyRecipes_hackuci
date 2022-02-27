@@ -74,6 +74,7 @@ function App() {
         var recipeCalories = item.recipe.calories / 10; // without the divide by 10
         var recipeName = item.recipe.label;
         var recipeIngredients = item.recipe.ingredientLines;
+        var IngredientsSpaced = recipeIngredients.join(' | ');
         var recipeURL = item.recipe.shareAs;
         var recipeCarbsAmount = item.recipe.totalNutrients.CHOCDF.quantity;
         var recipeCarbsUnit = item.recipe.totalNutrients.CHOCDF.unit;
@@ -85,7 +86,7 @@ function App() {
           "name": recipeName,
           "image": recipeImage,
           "calories": recipeCalories,
-          "ingredients": recipeIngredients,
+          "ingredients": IngredientsSpaced,
           "url": recipeURL,
           "carbsAmount" : recipeCarbsAmount,
           "carbsUnit" : recipeCarbsUnit,

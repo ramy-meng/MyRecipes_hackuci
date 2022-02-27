@@ -1,0 +1,18 @@
+#wrapper{
+    width: 50%;
+    margin: auto;
+    border-radius: 2px
+}
+
+#header{
+    font-size: smaller;
+
+}
+
+#button{
+    top:11%;
+    left:55%;
+    width:100px;
+    height:40px;
+    position: absolute;
+}
