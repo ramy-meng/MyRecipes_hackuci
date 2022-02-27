@@ -1,18 +1,16 @@
 import React from "react";
 
 function RecipeView({ recipes }) {
-    console.log("RecipeView")
-    console.log(recipes)
-    console.log("RECIPES" + recipes)
-    console.log(typeof(recipes))
-    console.log(recipes[1])
+    //console.log("RecipeView")
+    //console.log(recipes)
+    //console.log("RECIPES" + recipes)
+    //console.log(typeof(recipes))
+    //console.log(recipes[1])
 
     var items = Array()
-    console.log("about to start printing images");
+    //console.log("about to start printing images");
     return(
         <div>
-            dfg
-            {/* {JSON.stringify(recipes)} */}
         {recipes.map(item => (
             <div>
 

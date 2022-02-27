@@ -63,8 +63,6 @@ function App() {
     setDiets(newDietInput);
   }
 
-  
-  
   //this function gets all information needed form api about a recipe or food and puts them in variables
   // im not sure how to compile all these variables into a single component though.
   const getRecipeorFood = (data) => { // userInput is what user put in search
@@ -74,21 +72,33 @@ function App() {
       //if (item.recipe.label === userInput) { // userInput was a recipe
         //console.log(userInput +  " found from API"); /* Print to console for debugging*/
         var recipeImage = item.recipe.image;
-        var recipeCalories = item.recipe.calories; // without the divide by 10
+        var recipeCalories = item.recipe.calories / 10; // without the divide by 10
         var recipeName = item.recipe.label;
         var recipeIngredients = item.recipe.ingredientLines;
         var recipeURL = item.recipe.shareAs;
+        var recipeCarbsAmount = item.recipe.totalNutrients.CHOCDF.quantity;
+        var recipeCarbsUnit = item.recipe.totalNutrients.CHOCDF.unit;
+        var recipeFatsAmount = item.recipe.totalNutrients.FAT.quantity;
+        var recipeFatsUnit = item.recipe.totalNutrients.FAT.unit;
+        var recipeProteinsAmount = item.recipe.totalNutrients.PROCNT.quantity;
+        var recipeProteinsUnit = item.recipe.totalNutrients.PROCNT.unit;
         var recipe = {
           "name": recipeName,
           "image": recipeImage,
           "calories": recipeCalories,
           "ingredients": recipeIngredients,
-          "url": recipeURL
+          "url": recipeURL,
+          "carbsAmount" : recipeCarbsAmount,
+          "carbsUnit" : recipeCarbsUnit,
+          "fatsAmount" : recipeFatsAmount,
+          "fatsUnit" : recipeFatsUnit,
+          "proteinsAmount" : recipeProteinsAmount,
+          "proteinsUnit" : recipeProteinsUnit
         }
-        console.log("We are in getRecipeorFood and the recipe is " + recipe.name);
+        //console.log("We are in getRecipeorFood and the recipe is " + recipe.name);
         tempRecipes.push(recipe);
   
-        console.log("Recipe list size is now " + tempRecipes.length);
+        //console.log("Recipe list size is now " + tempRecipes.length);
         
       
         // console.log("Name is " + recipeName + " with calories of " + recipeCalories + 
@@ -173,12 +183,12 @@ function App() {
       method: 'GET',
   }).then(res => res.json())
   .then(response => {
-      console.log(response)
+      //console.log(response)
 
         true_data = response.hits
         getRecipeorFood(true_data);
-        console.log(recipes.length)
-        console.log(recipes)
+        //console.log(recipes.length)
+        //console.log(recipes)
         checking = true;
       
     })
@@ -222,19 +232,13 @@ function App() {
               allergies = {allergies} allergiesChanged = {handleAllergiesInput}
               diets = {diets} dietsChanged = {handleDietInput}
               ></Filterbar>
-              gh
               <RecipeView recipes={recipes}></RecipeView>
               {/* {checking && <RecipeView recipes={recipes}> </RecipeView>} */}
             </div>
           } />
           {!authCtx.isLoggedIn && <Route path='/auth' element = {<AuthPage />}/>}
           <Route path='/profile' element = { authCtx.isLoggedIn ? <UserProfile /> : <Navigate to='/auth' />}/>
-        </Routes>
-        
-        
-        
-        
-        
+        </Routes>   
       </Layout>
     </Router>
   );
