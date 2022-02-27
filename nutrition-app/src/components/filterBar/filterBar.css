@@ -1,0 +1,11 @@
+.filterBar{
+    background-color: gray;
+    display: flex;
+    flex-wrap: nowrap;
+    width: 60%;
+    margin: auto;
+}
+
+
+
+
