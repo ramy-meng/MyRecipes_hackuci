@@ -14,7 +14,6 @@ import AuthContext from './store/auth-context';
 import RecipeView from './components/RecipeView/RecipeView'
 
 var true_data;
-var checking = false;
 
 function App() {
   let recipes = Array();
@@ -61,8 +60,6 @@ function App() {
     setDiets(newDietInput);
   }
 
-  
-
   //this function gets all information needed form api about a recipe or food and puts them in variables
   // im not sure how to compile all these variables into a single component though.
   const getRecipeorFood = (data) => { // userInput is what user put in search
@@ -101,7 +98,6 @@ function App() {
       setUserInput(food)
   }
 
-//////
   const findhealth = () =>{
     var re= []
     for (const [key, value] of Object.entries(allergies)){
@@ -110,14 +106,11 @@ function App() {
 
       }
     }
-
     for (const [key, value] of Object.entries(diets)){
       if (value){
         re.push(key);
-
       }
     }
-
     return re;
   }
 
@@ -157,8 +150,6 @@ function App() {
     }
   }
 
-
-
   const params = new URLSearchParams(searchquery);
   fetch('http://127.0.0.1:5000/search/?' + params.toString(),{
       method: 'GET',
@@ -169,9 +160,7 @@ function App() {
         true_data = response.hits
         getRecipeorFood(true_data);
         console.log(recipes.length)
-        console.log(recipes)
-        checking = true;
-      
+        console.log(recipes)      
     })
   }, [userInput]);
 
@@ -197,7 +186,6 @@ function App() {
   //   })
   // });
 
-
   const fetchRecipeHandler = () => {
       var allRecipes;
       fetch('https://authentication-b446d-default-rtdb.firebaseio.com/recipes.json').then(response => {
@@ -218,8 +206,6 @@ function App() {
       return userRecipe;
     }
 
-
-
   const saveRecipeHandler = (recipeInfo) => {
     var token = "token";
     recipeInfo[token] = authCtx.token;
@@ -233,9 +219,6 @@ function App() {
     })
   }
 
-
-
-  
   return (
       <Layout>
         <Routes>
@@ -247,8 +230,8 @@ function App() {
               allergies = {allergies} allergiesChanged = {handleAllergiesInput}
               diets = {diets} dietsChanged = {handleDietInput}
               ></Filterbar>
-              <RecipeView recipes={recipes}></RecipeView>
-              {/* {checking && <RecipeView recipes={recipes}> </RecipeView>} */}
+              <RecipeView recipes={recipes}> </RecipeView>
+              {/* <FoodForm generateLetter = { generateRandomLetter} addUserInput={addUserInput}> </FoodForm> */}
             </div>
           } />
           {!authCtx.isLoggedIn && <Route path='/auth' element = {<AuthPage />}/>}
