@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes ,Route } from 'react-router-dom';
 
@@ -96,13 +96,48 @@ function App() {
     })
   }, [allergies]);
 
-  
+
+  const fetchRecipeHandler = () => {
+      var allRecipes;
+      fetch('https://authentication-b446d-default-rtdb.firebaseio.com/recipes.json').then(response => {
+        return response.json()
+      }).then(data => {
+        console.log(data)
+        allRecipes = data
+      })
+      const userRecipe = [];
+      // loop through to get all the data that has the same tokenID as our user and append it to an array
+      // each recipe has it own key so we can loop through every
+      for (const key in allRecipes) {
+        if (allRecipes[key]['token'] === authCtx.token) {
+            userRecipe.push(allRecipes[key]);
+        }
+      }
+      //Return an array of user's recipe
+      return userRecipe;
+    }
+
+
+
+  const addRecipeHandler = (recipeInfo) => {
+    var token = "token";
+    recipeInfo[token] = authCtx.token;
+
+    fetch('https://authentication-b446d-default-rtdb.firebaseio.com/recipes.json', {
+      method: 'POST',
+      body: JSON.stringify(recipeInfo)
+    }).then(data => {
+      console.log(data)
+      console.log("Data has been posted!")
+    })
+  }
 
   return (
       <Layout>
         <Routes>
           <Route path='/' element = {
             <div className="App">
+              {<button onClick={fetchRecipeHandler}></button> }
               <Filterbar 
               calories = {calories} caloriesChanged = {handleCaloriesInput} 
               allergies = {allergies} allergiesChanged = {handleAllergiesInput}

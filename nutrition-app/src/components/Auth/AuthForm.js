@@ -65,6 +65,7 @@ const AuthForm = () => {
         //const expirationTime = new Date(new Date().getTime()+ (+data.expeiresin * 1000));
         authCtx.login(data.idToken);
         navigate('/', { replace: true })
+        console.log("This is what we get from login: " + data)
       })
       .catch((err) =>{
         alert(err.message);
