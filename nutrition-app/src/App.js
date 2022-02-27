@@ -10,7 +10,7 @@ import Filterbar from './components/filterBar/filterBar'
 import Layout from './components/Layout/Layout';
 import UserProfile from './components/Profie/UserProfile';
 import AuthPage from './pages/AuthPage';
-import HomePage from './pages/HomePage';
+import FoodForm from './FoodForm';
 import AuthContext from './store/auth-context';
 
 var true_data;
@@ -119,17 +119,6 @@ function App() {
       </Layout>
     </Router>
   );
-
-  // return (
-    // <div className="App">
-    //   <FoodForm></FoodForm>
-    //   <Filterbar 
-    //   calories = {calories} caloriesChanged = {handleCaloriesInput} 
-    //   allergies = {allergies} allergiesChanged = {handleAllergiesInput}
-    //   diets = {diets} dietsChanged = {handleDietInput}
-    //   ></Filterbar>
-    // </div>
-  // );
 }
 
 export default App;
