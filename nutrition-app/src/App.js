@@ -119,7 +119,7 @@ function App() {
 
 
 
-  const addRecipeHandler = (recipeInfo) => {
+  const saveRecipeHandler = (recipeInfo) => {
     var token = "token";
     recipeInfo[token] = authCtx.token;
 
