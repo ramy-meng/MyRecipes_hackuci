@@ -64,7 +64,7 @@ function App() {
   //this function gets all information needed form api about a recipe or food and puts them in variables
   // im not sure how to compile all these variables into a single component though.
   const getRecipeorFood = (userInput, data) => { // userInput is what user put in search
-    data.hits.forEach((item) => {
+    data.forEach((item) => {
       if (item.recipe.label === userInput) { // userInput was a recipe
         console.log(userInput +  " found from API"); /* Print to console for debugging*/
         var recipeImage = item.recipe.image;
@@ -99,9 +99,11 @@ function App() {
       console.log(response)
       response = response.json()
       response.then(data => {
-        console.log(data.hits)
+        true_data = data.hits
+        getRecipeorFood(userInput, true_data);
       })
-     //getRecipeorFood("Chicken Vesuvio", true_data);
+    
+    
       
     })
   });
