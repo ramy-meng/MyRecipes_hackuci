@@ -84,27 +84,30 @@ function App() {
     });
   }
 
-
-  useEffect(() => {
-    //console.log(allergies)
-  fetch('http://127.0.0.1:5000/search/')
-  .then(response => {
-      console.log(response)
-      response.json()
-      .then(data => {
-        console.log(data)
-        true_data = data;
-        getRecipeorFood("Chicken Vesuvio", true_data);
-      })
-    })
-  }, [allergies]);
-
-  
-  const [userInput, setUserInput] = useState([]);
+ const [userInput, setUserInput] = useState([]);
   const addUserInput = (food) => {
       setUserInput(food)
   }
 
+  useEffect(() => {
+    //console.log(allergies)
+  console.log("fetching")
+  var url = 'http://127.0.0.1:5000/search/' + userInput;
+  console.log(url)
+  fetch(url)
+  .then(response => {
+      console.log(response)
+      response = response.json()
+      response.then(data => {
+        console.log(data.hits)
+      })
+     //getRecipeorFood("Chicken Vesuvio", true_data);
+      
+    })
+  });
+
+  
+ 
   return (
     <Router>
       <Layout>
