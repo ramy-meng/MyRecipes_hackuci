@@ -23,11 +23,9 @@ def searchRequest(userInput):
     query['app_id'] = appid
     query['app_key'] = appkey
     #query['health'] = health
-    print(query)
     response = requests.get(url, params = query)
     # relist = {i['recipe']['label'] : 1 for i in response.json()['hits']}
     # print(relist)
-    print(response.json())
     return response.json()
 
 

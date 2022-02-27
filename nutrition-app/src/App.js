@@ -12,11 +12,12 @@ import UserProfile from './components/Profie/UserProfile';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import AuthContext from './store/auth-context';
+import RecipeView from './components/RecipeView/RecipeView'
 
 var true_data;
 
 function App() {
-  let recipe;
+  let recipes = Array();
   const authCtx = useContext(AuthContext);
   const [calories, setCalories] = useState(-1);
   const [allergies, setAllergies] = useState(
@@ -73,13 +74,14 @@ function App() {
         var recipeName = item.recipe.label;
         var recipeIngredients = item.recipe.ingredientLines;
         var recipeURL = item.recipe.shareAs;
-        recipe = {
+        var recipe = {
           "name": recipeName,
           "image": recipeImage,
           "calories": recipeCalories,
           "ingredients": recipeIngredients,
           "url": recipeURL
         }
+        recipes.push(recipe);
         
       
         console.log("Name is " + recipeName + " with calories of " + recipeCalories + 
@@ -104,6 +106,7 @@ function App() {
   console.log("fetching")
   var url = 'http://127.0.0.1:5000/search/' + userInput;
   console.log(url)
+  console.log(userInput)
   fetch(url)
   .then(response => {
       console.log(response)
@@ -111,7 +114,9 @@ function App() {
       response.then(data => {
         true_data = data.hits
         getRecipeorFood(userInput, true_data);
-        console.log(recipe)
+        console.log(recipes.length)
+        console.log(recipes)
+
       })
     
     
@@ -120,7 +125,6 @@ function App() {
   });
 
   
- 
   return (
     <Router>
       <Layout>
@@ -136,9 +140,13 @@ function App() {
             </div>
           } />
           {!authCtx.isLoggedIn && <Route path='/auth' element = {<AuthPage />}/>}
-
           <Route path='/profile' element = { authCtx.isLoggedIn ? <UserProfile /> : <Navigate to='/auth' />}/>
         </Routes>
+        
+        <RecipeView recipes={recipes}> </RecipeView>
+        
+        
+        
       </Layout>
     </Router>
   );
