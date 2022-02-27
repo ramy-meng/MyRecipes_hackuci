@@ -15,6 +15,7 @@ import AuthContext from './store/auth-context';
 import RecipeView from './components/RecipeView/RecipeView'
 
 var true_data;
+var checking = false;
 
 function App() {
   let recipes = Array();
@@ -22,23 +23,23 @@ function App() {
   const [calories, setCalories] = useState(-1);
   const [allergies, setAllergies] = useState(
     {
-        "Alcohol Free" : false,
-        "Celery Free": false,
-        "Dairy Free":false,
-        "Egg Free" : false,
-        "Fish Free":false,
-        "FODMAP Free":false,
-        "Gluten Free":false,
-        "Lupine Free":false,
-        "Mollusk Free":false,
-        "Mustard Free":false,
-        "Peanut Free":false,
-        "Pork Free":false,
-        "Shellfish Free": false,
-        "Soy Free":false,
-        "Sulfite Free": false,
-        "Tree Nut Free":false,
-        "Wheat Free" : false
+        "alcohol-free" : false,
+        "celery-free": false,
+        "dairy-free":false,
+        "egg-free" : false,
+        "fish-free":false,
+        "fodmap-free":false,
+        "gluten-free":false,
+        "lupine-free":false,
+        "mollusk-free":false,
+        "mustard-free":false,
+        "peanut-free":false,
+        "pork-free":false,
+        "shellfish-free": false,
+        "soy-free":false,
+        "sulfite-free": false,
+        "tree-nut-free":false,
+        "wheat-free" : false
 
     }); // set all the default to false here for the allergies
   const [diets, setDiets] = useState(
@@ -65,10 +66,10 @@ function App() {
 
   //this function gets all information needed form api about a recipe or food and puts them in variables
   // im not sure how to compile all these variables into a single component though.
-  const getRecipeorFood = (userInput, data) => { // userInput is what user put in search
+  const getRecipeorFood = (data) => { // userInput is what user put in search
     data.forEach((item) => {
-      if (item.recipe.label === userInput) { // userInput was a recipe
-        console.log(userInput +  " found from API"); /* Print to console for debugging*/
+      //if (item.recipe.label === userInput) { // userInput was a recipe
+        //console.log(userInput +  " found from API"); /* Print to console for debugging*/
         var recipeImage = item.recipe.image;
         var recipeCalories = item.recipe.calories; // without the divide by 10
         var recipeName = item.recipe.label;
@@ -84,15 +85,15 @@ function App() {
         recipes.push(recipe);
         
       
-        console.log("Name is " + recipeName + " with calories of " + recipeCalories + 
-        " and image url is " + recipeImage + " and ingredients are " + recipeIngredients +
-        " and the url to the recipe is " + recipeURL);
+        // console.log("Name is " + recipeName + " with calories of " + recipeCalories + 
+        // " and image url is " + recipeImage + " and ingredients are " + recipeIngredients +
+        // " and the url to the recipe is " + recipeURL);
         
-      }
-      else { // Either userInput was not a recipe and was a food item instead or they entered nonsense
-        console.log("Not found");
-        // TODO
-      }
+      //}
+      // else { // Either userInput was not a recipe and was a food item instead or they entered nonsense
+      //   console.log("Not found");
+      //   // TODO
+      // }
     });
   }
 
@@ -101,28 +102,104 @@ function App() {
       setUserInput(food)
   }
 
+//////
+  const findhealth = () =>{
+    var re= []
+    for (const [key, value] of Object.entries(allergies)){
+      if (value){
+        re.push(key);
+
+      }
+    }
+
+    for (const [key, value] of Object.entries(diets)){
+      if (value){
+        re.push(key);
+
+      }
+    }
+
+    return re;
+  }
+
+  const generateRandomLetter = () => {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    return alphabet[getRandomInt(0,25)]
+  }
+
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+  }
+
+
   useEffect(() => {
     //console.log(allergies)
-  console.log("fetching")
-  var url = 'http://127.0.0.1:5000/search/' + userInput;
-  console.log(url)
+    if (userInput  === "") {return;}
+  var health = findhealth();
+  console.log(allergies)
   console.log(userInput)
-  fetch(url)
+  var searchquery = new FormData();
+  if (userInput != "")
+  {
+      searchquery.append("q", userInput);
+    
+  }
+  else{
+      searchquery.append("q", generateRandomLetter());
+  }
+  if (health.length > 0)
+  {
+    for (let i  = 0; i < health.length; i++)
+    {
+      searchquery.append("health", health[i])
+
+    }
+  }
+
+
+
+  const params = new URLSearchParams(searchquery);
+  fetch('http://127.0.0.1:5000/search/?' + params.toString(),{
+      method: 'GET',
+  }).then(res => res.json())
   .then(response => {
       console.log(response)
-      response = response.json()
-      response.then(data => {
-        true_data = data.hits
-        getRecipeorFood(userInput, true_data);
+
+        true_data = response.hits
+        getRecipeorFood(true_data);
         console.log(recipes.length)
         console.log(recipes)
-
-      })
-    
-    
+        checking = true;
       
     })
-  });
+  }, [userInput]);
+
+////
+  // useEffect(() => {
+  //   //console.log(allergies)
+  // console.log("fetching")
+  // var url = 'http://127.0.0.1:5000/search/' + userInput;
+  // console.log(url)
+  // console.log(userInput)
+  // fetch(url)
+  // .then(response => {
+  //     console.log(response)
+  //     response = response.json()
+  //     response.then(data => {
+  //       true_data = data.hits
+  //       getRecipeorFood(true_data);
+  //       console.log(recipes.length)
+  //       console.log(recipes)
+
+  //     })
+    
+  //   })
+  // });
+
+
+
 
   
   return (
@@ -131,19 +208,21 @@ function App() {
         <Routes>
           <Route path='/' element = {
             <div className="App">
-              <FoodForm addUserInput={addUserInput}> </FoodForm>
+              <FoodForm generateLetter = { generateRandomLetter} addUserInput={addUserInput}> </FoodForm>
               <Filterbar 
               calories = {calories} caloriesChanged = {handleCaloriesInput} 
               allergies = {allergies} allergiesChanged = {handleAllergiesInput}
               diets = {diets} dietsChanged = {handleDietInput}
               ></Filterbar>
+              <RecipeView recipes={recipes}></RecipeView>
+              {/* {checking && <RecipeView recipes={recipes}> </RecipeView>} */}
             </div>
           } />
           {!authCtx.isLoggedIn && <Route path='/auth' element = {<AuthPage />}/>}
           <Route path='/profile' element = { authCtx.isLoggedIn ? <UserProfile /> : <Navigate to='/auth' />}/>
         </Routes>
         
-        <RecipeView recipes={recipes}> </RecipeView>
+        
         
         
         

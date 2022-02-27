@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 import requests
 import json
@@ -9,7 +9,9 @@ appid = "13d3ef3c"
 appkey = "c877e6b981dfe35b55518b76f6af9001"
 
 query = {
-    'type' :'public'
+    'type' :'public',
+    'app_id': appid,
+    'app_key': appkey
 }
 #?type=public&q=chicken&app_id=13d3ef3c&app_key=c877e6b981dfe35b55518b76f6af9001'
 
@@ -17,19 +19,21 @@ query = {
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/search/<userInput>", methods = ["GET"])
-def searchRequest(userInput):
-    query['q'] = userInput
-    query['app_id'] = appid
-    query['app_key'] = appkey
-    #query['health'] = health
+@app.route("/search/", methods = ["GET"])
+def searchRequest():
+    q = request.args.get('q')
+    health = request.args.get('health')
+    query['q'] = q
+    print(health)
+    if health != "":
+        query['health'] = health
+    print(query)
     response = requests.get(url, params = query)
     # relist = {i['recipe']['label'] : 1 for i in response.json()['hits']}
     # print(relist)
-    return response.json()
-
-
-
+    print(response.json())
+    
+    return jsonify(response.json())
 
 
 

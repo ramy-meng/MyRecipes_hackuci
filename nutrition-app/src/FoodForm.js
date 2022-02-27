@@ -1,14 +1,21 @@
 import React from "react";
 import { useState } from "react";
 
-function FoodForm({ addUserInput }) {
+function FoodForm(props) {
 
   const [userInput, setUserInput] = useState();
   
 
   const handleSubmit = (e) => {
-    addUserInput(userInput);
     e.preventDefault();
+    if (userInput === "")
+    {
+      props.addUserInput(props.generateLetter())
+    }
+    else{
+      props.addUserInput(userInput);
+    }
+    
   }
  
   return (
