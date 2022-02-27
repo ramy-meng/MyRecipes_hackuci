@@ -16,8 +16,9 @@ import RecipeView from './components/RecipeView/RecipeView'
 var true_data;
 
 function App() {
-  let recipes = Array();
+  // let recipes = Array();
   const authCtx = useContext(AuthContext);
+  const [recipes, setRecipes] = useState([]);
   const [calories, setCalories] = useState(-1);
   const [allergies, setAllergies] = useState(
     {
@@ -59,11 +60,12 @@ function App() {
   const handleDietInput = (newDietInput) =>{
     setDiets(newDietInput);
   }
-
   //this function gets all information needed form api about a recipe or food and puts them in variables
   // im not sure how to compile all these variables into a single component though.
   const getRecipeorFood = (data) => { // userInput is what user put in search
+    const tempRecipes = Array();
     data.forEach((item) => {
+        
       //if (item.recipe.label === userInput) { // userInput was a recipe
         //console.log(userInput +  " found from API"); /* Print to console for debugging*/
         var recipeImage = item.recipe.image;
@@ -78,7 +80,10 @@ function App() {
           "ingredients": recipeIngredients,
           "url": recipeURL
         }
-        recipes.push(recipe);
+        console.log("We are in getRecipeorFood and the recipe is " + recipe.name);
+        tempRecipes.push(recipe);
+  
+        console.log("Recipe list size is now " + tempRecipes.length);
         
       
         // console.log("Name is " + recipeName + " with calories of " + recipeCalories + 
@@ -90,7 +95,9 @@ function App() {
       //   console.log("Not found");
       //   // TODO
       // }
-    });
+    })
+    console.log("the temp recipes are " + tempRecipes);
+    setRecipes(tempRecipes);
   }
 
  const [userInput, setUserInput] = useState([]);
@@ -230,8 +237,8 @@ function App() {
               allergies = {allergies} allergiesChanged = {handleAllergiesInput}
               diets = {diets} dietsChanged = {handleDietInput}
               ></Filterbar>
-              <RecipeView recipes={recipes}> </RecipeView>
-              {/* <FoodForm generateLetter = { generateRandomLetter} addUserInput={addUserInput}> </FoodForm> */}
+              <RecipeView recipes={recipes}></RecipeView>
+
             </div>
           } />
           {!authCtx.isLoggedIn && <Route path='/auth' element = {<AuthPage />}/>}
