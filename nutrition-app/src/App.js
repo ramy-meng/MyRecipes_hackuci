@@ -106,8 +106,8 @@ function App() {
               <Filterbar 
               calories = {calories} caloriesChanged = {handleCaloriesInput} 
               allergies = {allergies} allergiesChanged = {handleAllergiesInput}
-              diets = {diets} dietsChanged = {handleDietInput}
-              ></Filterbar>
+              diets = {diets} dietsChanged = {handleDietInput}>
+              </Filterbar>
             </div>
           } />
           {!authCtx.isLoggedIn && <Route path='/auth' element = {<AuthPage />}/>}
@@ -116,17 +116,6 @@ function App() {
         </Routes>
       </Layout>
   );
-
-  // return (
-    // <div className="App">
-    //   <FoodForm></FoodForm>
-    //   <Filterbar 
-    //   calories = {calories} caloriesChanged = {handleCaloriesInput} 
-    //   allergies = {allergies} allergiesChanged = {handleAllergiesInput}
-    //   diets = {diets} dietsChanged = {handleDietInput}
-    //   ></Filterbar>
-    // </div>
-  // );
 }
 
 export default App;

@@ -28,7 +28,7 @@ const ProfileForm = () => {
     }).then(res => {
       //Assumption: always succeds
       alert("Password has been saved!");
-      navigate('/', { replace: true });
+      navigate('/', { replace: true })
     })
   };
 
