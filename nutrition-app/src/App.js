@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes ,Route } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
 import './App.css';
-// import FoodForm from './FoodForm'
+import FoodForm from './FoodForm'
 import Filterbar from './components/filterBar/filterBar'
 import Layout from './components/Layout/Layout';
 import UserProfile from './components/Profie/UserProfile';
@@ -59,6 +59,8 @@ function App() {
     setDiets(newDietInput);
   }
 
+  
+
   //this function gets all information needed form api about a recipe or food and puts them in variables
   // im not sure how to compile all these variables into a single component though.
   const getRecipeorFood = (userInput, data) => { // userInput is what user put in search
@@ -98,6 +100,10 @@ function App() {
   }, [allergies]);
 
   
+  const [userInput, setUserInput] = useState([]);
+  const addUserInput = (food) => {
+      setUserInput(food)
+  }
 
   return (
     <Router>
@@ -105,6 +111,7 @@ function App() {
         <Routes>
           <Route path='/' element = {
             <div className="App">
+              <FoodForm addUserInput={addUserInput}> </FoodForm>
               <Filterbar 
               calories = {calories} caloriesChanged = {handleCaloriesInput} 
               allergies = {allergies} allergiesChanged = {handleAllergiesInput}
