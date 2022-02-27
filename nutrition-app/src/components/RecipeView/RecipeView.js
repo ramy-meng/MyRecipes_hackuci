@@ -8,10 +8,12 @@ function RecipeView({ recipes }) {
     console.log(recipes[1])
 
     var items = Array()
-    
+    console.log("about to start printing images");
     return(
         <div>
-        {recipes.map(item => {
+            dfg
+            {/* {JSON.stringify(recipes)} */}
+        {recipes.map(item => (
             <div>
 
             <h1>{item.name}</h1>,
@@ -22,7 +24,7 @@ function RecipeView({ recipes }) {
             <a href={item.url}>{item.url}</a>
             </p>,
             <img src={item.image} alt="Photo of {this.name}"/>
-            </div>}
+            </div>)
     )}
     </div>
     )
