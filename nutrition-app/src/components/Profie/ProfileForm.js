@@ -5,7 +5,7 @@ import AuthContext from '../../store/auth-context';
 import classes from './ProfileForm.module.css';
 
 const ProfileForm = () => {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const newPasswordInputRef = useRef();
   const authCtx = useContext(AuthContext)
 
@@ -28,7 +28,7 @@ const ProfileForm = () => {
     }).then(res => {
       //Assumption: always succeds
       alert("Password has been saved!");
-      history.replace('/');
+      navigate('/', { replace: true });
     })
   };
 

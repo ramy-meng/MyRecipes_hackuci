@@ -6,7 +6,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10%;
+    padding: 0 5%;
   }
   
   .logo {
@@ -18,7 +18,7 @@
   
   .header ul {
     list-style: none;
-    margin-right: 200px;
+    margin-right: 150px;
     padding: 0;
     display: flex;
     align-items: baseline;

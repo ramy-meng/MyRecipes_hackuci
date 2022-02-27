@@ -8,9 +8,8 @@ import './App.css';
 // import FoodForm from './FoodForm'
 import Filterbar from './components/filterBar/filterBar'
 import Layout from './components/Layout/Layout';
-import UserProfile from './components/Profie/UserProfile';
 import AuthPage from './pages/AuthPage';
-import HomePage from './pages/HomePage';
+import ProfilePage from './pages/ProfilePage';
 import AuthContext from './store/auth-context';
 
 var true_data;
@@ -100,7 +99,6 @@ function App() {
   
 
   return (
-    <Router>
       <Layout>
         <Routes>
           <Route path='/' element = {
@@ -114,10 +112,9 @@ function App() {
           } />
           {!authCtx.isLoggedIn && <Route path='/auth' element = {<AuthPage />}/>}
 
-          <Route path='/profile' element = { authCtx.isLoggedIn ? <UserProfile /> : <Navigate to='/auth' />}/>
+          <Route path='/profile' element = { authCtx.isLoggedIn ? <ProfilePage /> : <Navigate to='/auth' />}/>
         </Routes>
       </Layout>
-    </Router>
   );
 
   // return (

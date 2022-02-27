@@ -5,7 +5,7 @@ import AuthContext from '../../store/auth-context';
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -64,7 +64,7 @@ const AuthForm = () => {
       .then((data) => {
         //const expirationTime = new Date(new Date().getTime()+ (+data.expeiresin * 1000));
         authCtx.login(data.idToken);
-        history.replace('/')
+        navigate('/', { replace: true })
       })
       .catch((err) =>{
         alert(err.message);
