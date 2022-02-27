@@ -16,6 +16,7 @@ import AuthContext from './store/auth-context';
 var true_data;
 
 function App() {
+  let recipe;
   const authCtx = useContext(AuthContext);
   const [calories, setCalories] = useState(-1);
   const [allergies, setAllergies] = useState(
@@ -72,6 +73,15 @@ function App() {
         var recipeName = item.recipe.label;
         var recipeIngredients = item.recipe.ingredientLines;
         var recipeURL = item.recipe.shareAs;
+        recipe = {
+          "name": recipeName,
+          "image": recipeImage,
+          "calories": recipeCalories,
+          "ingredients": recipeIngredients,
+          "url": recipeURL
+        }
+        
+      
         console.log("Name is " + recipeName + " with calories of " + recipeCalories + 
         " and image url is " + recipeImage + " and ingredients are " + recipeIngredients +
         " and the url to the recipe is " + recipeURL);
@@ -101,6 +111,7 @@ function App() {
       response.then(data => {
         true_data = data.hits
         getRecipeorFood(userInput, true_data);
+        console.log(recipe)
       })
     
     
