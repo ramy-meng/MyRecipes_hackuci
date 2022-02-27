@@ -16,7 +16,11 @@ const MainNavigation = () => {
   return (
     <header className={classes.header}>
       <Link to='/'>
+<<<<<<< HEAD
         <div className={classes.logo}>My Recipes</div>
+=======
+        <div className={classes.logo}>My recipes</div>
+>>>>>>> 0fee123f3f8687b6c57d3ed7ac1de85253426f7a
       </Link>
       <nav>
         <ul>

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes ,Route } from 'react-router-dom';
 
@@ -8,14 +8,12 @@ import './App.css';
 import FoodForm from './FoodForm'
 import Filterbar from './components/filterBar/filterBar'
 import Layout from './components/Layout/Layout';
-import UserProfile from './components/Profie/UserProfile';
 import AuthPage from './pages/AuthPage';
-import HomePage from './pages/HomePage';
+import ProfilePage from './pages/ProfilePage';
 import AuthContext from './store/auth-context';
 import RecipeView from './components/RecipeView/RecipeView'
 
 var true_data;
-var checking = false;
 
 function App() {
   // let recipes = Array();
@@ -62,6 +60,7 @@ function App() {
   const handleDietInput = (newDietInput) =>{
     setDiets(newDietInput);
   }
+
 
   //this function gets all information needed form api about a recipe or food and puts them in variables
   // im not sure how to compile all these variables into a single component though.
@@ -120,7 +119,6 @@ function App() {
       setUserInput(food)
   }
 
-//////
   const findhealth = () =>{
     var re= []
     for (const [key, value] of Object.entries(allergies)){
@@ -129,14 +127,11 @@ function App() {
 
       }
     }
-
     for (const [key, value] of Object.entries(diets)){
       if (value){
         re.push(key);
-
       }
     }
-
     return re;
   }
 
@@ -159,7 +154,7 @@ function App() {
   console.log(allergies)
   console.log(userInput)
   var searchquery = new FormData();
-  if (userInput != "")
+  if (userInput !== "")
   {
       searchquery.append("q", userInput);
     
@@ -176,8 +171,6 @@ function App() {
     }
   }
 
-
-
   const params = new URLSearchParams(searchquery);
   fetch('http://127.0.0.1:5000/search/?' + params.toString(),{
       method: 'GET',
@@ -189,8 +182,9 @@ function App() {
         getRecipeorFood(true_data);
         //console.log(recipes.length)
         //console.log(recipes)
-        checking = true;
+
       
+
     })
   }, [userInput]);
 
@@ -216,12 +210,40 @@ function App() {
   //   })
   // });
 
+  const fetchRecipeHandler = () => {
+      var allRecipes;
+      fetch('https://authentication-b446d-default-rtdb.firebaseio.com/recipes.json').then(response => {
+        return response.json()
+      }).then(data => {
+        console.log(data)
+        allRecipes = data
+      })
+      const userRecipe = [];
+      // loop through to get all the data that has the same tokenID as our user and append it to an array
+      // each recipe has it own key so we can loop through every
+      for (const key in allRecipes) {
+        if (allRecipes[key]['token'] === authCtx.token) {
+            userRecipe.push(allRecipes[key]);
+        }
+      }
+      //Return an array of user's recipe
+      return userRecipe;
+    }
 
+  const saveRecipeHandler = (recipeInfo) => {
+    var token = "token";
+    recipeInfo[token] = authCtx.token;
 
+    fetch('https://authentication-b446d-default-rtdb.firebaseio.com/recipes.json', {
+      method: 'POST',
+      body: JSON.stringify(recipeInfo)
+    }).then(data => {
+      console.log(data)
+      console.log("Data has been posted!")
+    })
+  }
 
-  
   return (
-    <Router>
       <Layout>
         <Routes>
           <Route path='/' element = {
@@ -233,26 +255,14 @@ function App() {
               diets = {diets} dietsChanged = {handleDietInput}
               ></Filterbar>
               <RecipeView recipes={recipes}></RecipeView>
-              {/* {checking && <RecipeView recipes={recipes}> </RecipeView>} */}
+
             </div>
           } />
           {!authCtx.isLoggedIn && <Route path='/auth' element = {<AuthPage />}/>}
-          <Route path='/profile' element = { authCtx.isLoggedIn ? <UserProfile /> : <Navigate to='/auth' />}/>
-        </Routes>   
+          <Route path='/profile' element = { authCtx.isLoggedIn ? <ProfilePage /> : <Navigate to='/auth' />}/>
+        </Routes>
       </Layout>
-    </Router>
   );
-
-  // return (
-    // <div className="App">
-    //   <FoodForm></FoodForm>
-    //   <Filterbar 
-    //   calories = {calories} caloriesChanged = {handleCaloriesInput} 
-    //   allergies = {allergies} allergiesChanged = {handleAllergiesInput}
-    //   diets = {diets} dietsChanged = {handleDietInput}
-    //   ></Filterbar>
-    // </div>
-  // );
 }
 
 export default App;
