@@ -140,7 +140,7 @@ function App() {
   console.log(allergies)
   console.log(userInput)
   var searchquery = new FormData();
-  if (userInput != "")
+  if (userInput !== "")
   {
       searchquery.append("q", userInput);
     
@@ -252,13 +252,8 @@ function App() {
             </div>
           } />
           {!authCtx.isLoggedIn && <Route path='/auth' element = {<AuthPage />}/>}
-          <Route path='/profile' element = { authCtx.isLoggedIn ? <UserProfile /> : <Navigate to='/auth' />}/>
+          <Route path='/profile' element = { authCtx.isLoggedIn ? <ProfilePage /> : <Navigate to='/auth' />}/>
         </Routes>
-        
-        
-        
-        
-        
       </Layout>
   );
 }
